@@ -1,0 +1,55 @@
+server:
+  port: 9000
+
+logging:
+  level:
+    org.springframework.security: trace
+    org.springframework.security.oauth2: trace
+
+spring:
+  application:
+    name: auth-server
+  datasource:
+    url: "jdbc:mysql://localhost:3386/identity"
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASSWORD:@123456}
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+  jackson:
+    serialization:
+      indent-output: true
+  data:
+    redis:
+      host: localhost
+      port: 6339
+      password: ${REDIS_PASSWORD:testpass}
+      lettuce:
+        pool:
+          max-active: 10 # Maximum number of active connections in the pool
+          max-idle: 5 # Maximum number of idle connections in the pool
+          min-idle: 5 # Minimum number of idle connections in the pool
+      connect-timeout: 30000 # Connection timeout (in milliseconds)
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: http://localhost:9000
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000
+#      client:
+#        registration:
+#          google:
+#            clientId: ${GOOGLE_CLIENT_ID}
+#            clientSecret: ${GOOGLE_CLIENT_SECRET}
+#            scope:
+#              - email
+#              - profile
+#              - openid
